@@ -54,7 +54,7 @@ const buildConfig = function() {
   return {
     input: `${NPM_PATH}/memserver/lib/mem-server.js`,
     output: {
-      file: 'vendor/shims/memserver/mem-server.js',
+      file: 'vendor/mem-server.js',
       format: 'iife'
     },
     name: 'MEMSERVER',

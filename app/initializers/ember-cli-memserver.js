@@ -1,8 +1,8 @@
 import require from 'require';
-import Server from '../memserver/server';
-import MemServerInitializer from '../memserver/initializer';
 import Ember from 'ember';
 import { singularize } from 'ember-inflector';
+import Server from '../memserver/server';
+import MemServerInitializer from '../memserver/initializer';
 
 const { classify } = Ember.String;
 

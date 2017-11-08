@@ -1,6 +1,0 @@
-test fixture constraints
-build template/routes and check those
-// unit test Response + Model exports
-make tests to simple crud REST routes + custom routes
-can add options to MemServer.start()
-general server tests
