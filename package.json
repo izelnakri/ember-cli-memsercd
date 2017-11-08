@@ -15,10 +15,17 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember try:each"
+    "test": "ember try:each",
+    "build:model": "rollup -c --environment BUILD:model",
+    "build:mem-server": "rollup -c --environment BUILD:mem-server"
   },
   "dependencies": {
-    "ember-cli-babel": "^6.6.0"
+    "ember-cli-babel": "^6.6.0",
+    "ember-inflector": "^2.0.1",
+    "fake-xml-http-request": "^1.6.0",
+    "memserver": "^0.8.8",
+    "pretender": "^1.6.1",
+    "route-recognizer": "^0.3.3"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",

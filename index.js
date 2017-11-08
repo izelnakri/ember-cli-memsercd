@@ -1,5 +1,4 @@
 /* eslint-env node */
-// NOTE: maybe use preBuild() hook, preprocessTree()
 'use strict';
 
 const path = require('path');
@@ -10,6 +9,7 @@ module.exports = {
   name: 'ember-cli-memserver',
   blueprintsPath() {
     // TODO: add here blueprints
+    // NOTE: maybe use preBuild() hook, preprocessTree()
   },
   isDevelopingAddon() {
    return true;
@@ -26,7 +26,11 @@ module.exports = {
       this.memserverDir = path.join(this.app.project.root, '/memserver');
     }
 
-    // NOTE: maybe do app.imports here
+    if (this.addonENV.enabled) {
+      app.import('vendor/mem-server.js');
+      app.import('vendor/shims/memserver/response.js');
+      app.import('vendor/shims/memserver/model.js');
+    }
   },
   treeFor() {
     if (!this.addonENV.enabled) {
@@ -46,27 +50,5 @@ module.exports = {
     }
 
     return this._super.treeFor.apply(this, arguments);
-    // NOTE: import all memserver files, FakeXMLHttpRequest, RouteRecognizer(this 2 might be unnecessary)
-    // models + fixtures gets required, Server and initializer gets required.
-    // MEMSERVER(modelFixtureTree, Server, initializer);
   }
 };
-
-// import models from '_memserver_models';
-// import fixtures from '_memserver_fixtures';
-// import initializer from '_memserver_initializer';
-// import targetMemServer from '_memserver';
-// import MEMSERVER from './mem-server';
-//
-// const modelFixtureTree = Object.keys(models).reduce((tree, modelName) => {
-//   return Object.assign({}, tree, {
-//     [modelName]: {
-//       model: models[modelName],
-//       fixtures: fixtures[modelName] || []
-//     }
-//   });
-// }, {});
-//
-// const memserver = MEMSERVER(modelFixtureTree, targetMemServer, initializer);
-//
-// export default memserver;
