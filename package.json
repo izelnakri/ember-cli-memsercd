@@ -1,9 +1,10 @@
 {
   "name": "ember-cli-memserver",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.0.5",
+  "description": "Mock HTTP Server + In-memory ORM/DB for Ember.js. Better Ember Mirage, Fastboot compliant MemServer bindings for Ember-cli",
   "keywords": [
-    "ember-addon"
+    "ember-addon", "http mock", "testing", "mock server", "orm", "server",
+    "mock database", "mirage", "ember mirage", "ember-cli-mirage"
   ],
   "license": "MIT",
   "author": "",

@@ -12,14 +12,12 @@ export default {
     const modelFixtureTree = Object.keys(requirejs.entries).reduce((result, moduleReference) => {
       if (/\/memserver\/fixtures/g.test(moduleReference)) {
         const modelName = classify(singularize(moduleReference.split('/').slice(-1)[0]));
-        console.log('modelName', modelName);
 
         result[modelName] = Object.assign(result[modelName] || {}, {
           fixtures: require(moduleReference, null, null, true).default
         });
       } else if (/\/memserver\/models/g.test(moduleReference)) {
         const modelName = classify(moduleReference.split('/').slice(-1)[0]);
-        console.log('modelName', modelName);
 
         result[modelName] = Object.assign(result[modelName] || {}, {
           model: require(moduleReference, null, null, true).default
