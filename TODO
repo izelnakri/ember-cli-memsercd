@@ -1,0 +1,21 @@
+- add memserver to package.json
+- check index.js build
+- check app/initializer to get MemServer to console based on app configs/environments
+
+// BLUEPRINT WORK:
+- maybe use blueprints for generate (or the memserver -g)
+- ember g memserver model modelName
+- ember g memserver init
+- ember memserver(?) // is this possible?
+- ember memserver version (?) // is this possible
+
+NOTE:
+- using proxies?
+- check ember-cli-mirage tests to replicate some things
+- vendor/shims?
+- check ember-cli-mirage CI setup
+- Changelog?
+
+
+// // TODO: Error out if memserver is used in production environment
+// // NOTE: check if we need: require('broccoli-babel-transpiler') or require('broccoli-builder');
