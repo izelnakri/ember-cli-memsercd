@@ -55,7 +55,5 @@ module.exports = {
 
       return mergeTrees(trees);
     }
-
-    return this._super.treeFor.apply(this, arguments);
   }
 };

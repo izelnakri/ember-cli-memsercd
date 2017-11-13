@@ -19,8 +19,6 @@ var nodeAjax = function(options) {
     }
   }
 
-  console.log('this is called?');
-
   return new Ember.RSVP.Promise((resolve, reject) => {
     $.ajax(options)
       .then((a) => resolve(a))
