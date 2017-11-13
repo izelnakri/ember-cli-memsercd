@@ -1278,14 +1278,13 @@ convert.rgb.gray = function (rgb) {
 	conversions that are not possible simply are not included.
 */
 
-// https://jsperf.com/object-keys-vs-for-in-with-closure/3
-var models$1 = Object.keys(conversions);
-
 function buildGraph() {
 	var graph = {};
+	// https://jsperf.com/object-keys-vs-for-in-with-closure/3
+	var models = Object.keys(conversions);
 
-	for (var len = models$1.length, i = 0; i < len; i++) {
-		graph[models$1[i]] = {
+	for (var len = models.length, i = 0; i < len; i++) {
+		graph[models[i]] = {
 			// http://jsperf.com/1-vs-infinity
 			// micro-opt, but this is simple.
 			distance: -1,
@@ -2805,7 +2804,7 @@ function generateMatch(startingPath, matcher, delegate) {
             return new Target(fullPath, matcher, delegate);
         }
     }
-
+    
     return match;
 }
 function addRoute(routeArray, path, handler) {
@@ -5519,7 +5518,7 @@ function getDefaultStatusCode(verb) {
 
 // HACK: Pretender REST defaults hack: For better UX
 ['get', 'put', 'post', 'delete'].forEach((verb) => {
-  window.Pretender.prototype[verb] = function (path, handler, async) {
+  window.Pretender.prototype[verb] = function(path, handler, async) {
     const fullPath = (this.urlPrefix || '') + (this.namespace ? ('/' + this.namespace) : '') + path;
     const targetHandler = handler || getDefaultRouteHandler(verb.toUpperCase(), fullPath);
     const timing = async ? async.timing || this.timing : this.timing;
@@ -5569,7 +5568,9 @@ function getDefaultRouteHandler(verb, path) {
 const ENVIRONMENT_IS_NODE = typeof global$1 === 'object';
 const targetNamespace = ENVIRONMENT_IS_NODE ? global$1 : window;
 
-global$1.self = window.self;
+if (ENVIRONMENT_IS_NODE) {
+  global$1.self = window.self;
+}
 
 window.FakeXMLHttpRequest = fake_xml_http_request;
 window.RouteRecognizer = RouteRecognizer;

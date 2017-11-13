@@ -30,7 +30,14 @@ module.exports = {
       app.import('vendor/mem-server.js');
       app.import('vendor/shims/memserver/response.js');
       app.import('vendor/shims/memserver/model.js');
+      app.import('vendor/shims/jquery.min.js');
     }
+  },
+  treeForFastBoot(tree) {
+    return this.addonENV.enabled ? tree : null;
+  },
+  updateFastBootManifest(manifest) {
+    return manifest;
   },
   treeFor() {
     if (!this.addonENV.enabled) {

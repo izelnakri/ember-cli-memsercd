@@ -35,9 +35,11 @@
     "ember-cli-babel": "^6.6.0",
     "ember-inflector": "^2.0.1",
     "fake-xml-http-request": "^1.6.0",
-    "memserver": "^0.8.8",
+    "jquery": "^3.2.1",
+    "memserver": "^0.8.9",
     "pretender": "^1.6.1",
-    "route-recognizer": "^0.3.3"
+    "route-recognizer": "^0.3.3",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
@@ -65,6 +67,21 @@
     "node": "^4.5 || 6.* || >= 7.*"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "fastbootDependencies": [
+      "memserver",
+      "chalk",
+      "fake-xml-http-request",
+      "route-recognizer",
+      "pretender",
+      "qs",
+      "i",
+      "ember-cli-string-utils",
+      "jsdom",
+      "fetch-mock",
+      "whatwg-fetch",
+      "jquery",
+      "window-jquery"
+    ]
   }
 }

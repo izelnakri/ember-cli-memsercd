@@ -11,6 +11,7 @@ import Inflector from 'i';
 const { pluralize } = Inflector();
 const NPM_PATH = './node_modules';
 const IS_MEMSERVER_MODEL_BUILD = process.env.BUILD === 'model';
+const IS_MEMSERVER_FASTBOOT_BUILD = process.env.BUILD === 'model';
 
 const buildConfig = function() {
   if (IS_MEMSERVER_MODEL_BUILD) {
@@ -40,6 +41,28 @@ const buildConfig = function() {
         resolve({ jsnext: true }),
         commonjs({
           include: 'node_modules/**',
+          namedExports: {
+            'node_modules/ember-cli-string-utils/index.js': ['classify', 'underscore', 'dasherize'],
+            'node_modules/ember-inflector/index.js': ['singularize', 'pluralize']
+          }
+        }),
+        globals(),
+        builtins()
+      ]
+    };
+  } else if (IS_MEMSERVER_FASTBOOT_BUILD) {
+    return {
+      input: `${NPM_PATH}/memserver/lib/mem-server.js`,
+      output: {
+        file: 'vendor/shims/izz.js',
+        format: 'iife'
+      },
+      name: 'MEMSERVER',
+      footer: 'window.MemServer = MEMSERVER;',
+      plugins: [
+        resolve({ jsnext: true }),
+        commonjs({
+          include: [`${require.resolve('memserver')}/../../node_modules/**`, 'node_modules/**'],
           namedExports: {
             'node_modules/ember-cli-string-utils/index.js': ['classify', 'underscore', 'dasherize'],
             'node_modules/ember-inflector/index.js': ['singularize', 'pluralize']

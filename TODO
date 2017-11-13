@@ -1,3 +1,7 @@
+- overwrite ember-cli-fastboot index.js serverMiddleWare with new FastBoot({ sandboxGlobals: }) + MemServer.start();
+- NOTE: mock fetch and test it
+
+
 - add memserver to package.json
 - check index.js build
 - check app/initializer to get MemServer to console based on app configs/environments
