@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-memserver",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Mock HTTP Server + In-memory ORM/DB for Ember.js. Fastboot compliant MemServer bindings for Ember-cli. Built for large frontend teams, fast tests and rapid prototyping",
   "keywords": [
     "ember-addon",
@@ -28,8 +28,7 @@
     "test:fastboot": "ember fastboot:test",
     "test:node": "mocha node-tests/**/*-test.js",
     "build:model": "rollup -c --environment BUILD:model",
-    "build:mem-server": "rollup -c --environment BUILD:mem-server",
-    "prepublish": "npm run build:model && npm run build:mem-server"
+    "build:mem-server": "rollup -c --environment BUILD:mem-server"
   },
   "dependencies": {
     "ember-cli-babel": "^6.6.0",
