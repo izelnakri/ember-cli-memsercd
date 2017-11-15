@@ -49,8 +49,8 @@
   resolved "https://registry.yarnpkg.com/@std/esm/-/esm-0.12.5.tgz#b38a9bc70462df18a09b16f653141b9ab5557635"
 
 "@types/node@*":
-  version "8.0.52"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.52.tgz#8e7f47747868e7687f2cd4922966e2d6af78d22d"
+  version "8.0.53"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.53.tgz#396b35af826fa66aad472c8cb7b8d5e277f4e6d8"
 
 abab@^1.0.0, abab@^1.0.3:
   version "1.0.4"
@@ -5768,9 +5768,9 @@ memory-streams@^0.1.0:
   dependencies:
     readable-stream "~1.0.2"
 
-memserver@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/memserver/-/memserver-0.9.0.tgz#6ee265fc51ee1339f9cb6e960370e098ee483ab5"
+memserver@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/memserver/-/memserver-0.9.1.tgz#9d224298926e5df80544a433b96558ecb017fdb1"
   dependencies:
     "@std/esm" "^0.12.5"
     babel-preset-env "^1.6.1"
@@ -5997,8 +5997,8 @@ mz@^2.6.0:
     thenify-all "^1.0.0"
 
 nan@^2.3.0, nan@^2.3.2:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.7.0.tgz#d95bf721ec877e08db276ed3fc6eb78f9083ad46"
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.8.0.tgz#ed715f3fe9de02b57a5e6252d90a96675e1f085a"
 
 natural-compare@^1.4.0:
   version "1.4.0"
