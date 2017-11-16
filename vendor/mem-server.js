@@ -3460,8 +3460,8 @@ var startServer = function(Server, options={}) {
         console.log(MemServer, colorStatusCode(request.status), verb.toUpperCase(), request.url);
         console.log(JSON.parse(request.responseText));
       };
-      this.passthroughRequest = function(verb, path) {
-        console.log(MemServer, chalk.yellow('[PASSTHROUGH]'), verb, path);
+      this.passthroughRequest = function(verb, path, request) {
+        console.log(MemServer, chalk.yellow('[PASSTHROUGH]'), verb, request.url);
       };
     }
 
@@ -3473,12 +3473,13 @@ var startServer = function(Server, options={}) {
   }, { trackRequests: false });
 
   // HACK: Pretender this.passthrough for better UX
+  // TODO: this doesnt passthrough full http:// https://
   pretender.passthrough = function(url) {
     const parent = window.Pretender.prototype;
     const verbs = ['get', 'post', 'put', 'delete'];
 
     if (!url) {
-      ['/**', '/'].forEach((path) => {
+      ['/**', '/', '/*'].forEach((path) => {
         verbs.forEach((verb) => pretender[verb](path, parent.passthrough));
       });
 
@@ -5409,7 +5410,7 @@ window.Pretender.prototype._handlerFor = function(verb, url, request) {
       return Object.assign(result, { [key]: targetValue });
     }, {});
 
-    if (request.requestBody && request.requestHeaders['Content-Type'] === 'application/json') {
+    if (request.requestBody && request.requestHeaders['Content-Type'].includes('application/json')) {
       request.params = Object.assign(request.params, JSON.parse(request.requestBody));
     } else {
       request.params = Object.assign(request.params, lib.parse(request.requestBody ));
