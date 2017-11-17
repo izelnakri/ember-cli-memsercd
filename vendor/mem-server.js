@@ -5402,7 +5402,7 @@ window.Pretender.prototype._handlerFor = function(verb, url, request) {
 
   var matches = registry.recognize(window.Pretender.parseURL(url).fullpath);
   var match = matches ? matches[0] : null;
-  var headers = request.requestHeaders;
+  var headers = request.requestHeaders || {};
 
   if (match) {
     request.headers = headers;
@@ -5418,7 +5418,9 @@ window.Pretender.prototype._handlerFor = function(verb, url, request) {
       return Object.assign(result, { [key]: targetValue });
     }, {});
 
-    if (request.requestBody && headers && headers['Content-Type'].includes('application/json')) {
+    var contentHeader = request.headers['Content-Type'];
+    
+    if (request.requestBody && contentHeader && contentHeader.includes('application/json')) {
       request.params = Object.assign(request.params, JSON.parse(request.requestBody));
     } else {
       request.params = Object.assign(request.params, lib.parse(request.requestBody ));
