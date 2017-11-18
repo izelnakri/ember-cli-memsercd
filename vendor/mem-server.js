@@ -5605,6 +5605,8 @@ var memServer = function(modelFixtureTree, Server, initializer=() => {}) {
     },
     shutdown() {
       this.Server.shutdown();
+      this.Server = {};
+      this.DB = {};
 
       return this;
     }
@@ -5627,7 +5629,7 @@ function registerModels(modelFixtureTree) {
 
 function resetDatabase(models, modelFixtureTree) {
   return Object.keys(models).reduce((result, modelName) => {
-    result[modelName] = modelFixtureTree[modelName].fixtures;
+    result[modelName] = Array.from(modelFixtureTree[modelName].fixtures);
 
     const modelPrimaryKey = result[modelName].reduce(([existingPrimaryKey, primaryKeys], model) => {
       const primaryKey = getModelPrimaryKey(model, existingPrimaryKey, modelName);
