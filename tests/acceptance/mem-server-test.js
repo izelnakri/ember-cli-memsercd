@@ -30,31 +30,33 @@ test('MemServer can be started with fixtures and initializers', function(assert)
   assert.equal(PhotoComment.count(), 4);
   assert.equal(Photo.count(), 3);
   assert.equal(User.count(), 3);
-  assert.deepEqual(User.findAll(), [
+  assert.deepEqual(User.serializer(User.findAll()), [
     {
-      id: 1,
+      city: null,
       email: 'contact@izelnakri.com',
-      is_verified: true,
-      username: 'izelnakri',
       first_name: 'Izel',
-      last_name: 'Nakri'
+      id: 1,
+      is_verified: true,
+      last_name: 'Nakri',
+      username: 'izelnakri'
     },
     {
-      id: 2,
+      city: null,
       email: 'benjie@hotmail.com',
-      is_verified: false,
-      username: 'benjamingraham',
       first_name: 'Benjamin',
-      last_name: 'Graham'
+      id: 2,
+      is_verified: false,
+      last_name: 'Graham',
+      username: 'benjamingraham'
     },
     {
-      id: 3,
       city: 'Istanbul',
       email: 'izelnakri@hotmail.com',
-      first_name: undefined,
-      last_name: undefined,
-      username: 'izelnakri',
-      is_verified: true
+      first_name: null,
+      id: 3,
+      is_verified: true,
+      last_name: null,
+      username: 'izelnakri'
     }
   ]);
 });
