@@ -27,6 +27,7 @@ module.exports = {
     }
 
     if (this.addonENV.enabled) {
+      
       app.import('vendor/mem-server.js');
       app.import('vendor/shims/memserver/response.js');
       app.import('vendor/shims/memserver/model.js');

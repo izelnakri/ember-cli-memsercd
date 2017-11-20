@@ -1,7 +1,7 @@
-import { test } from 'qunit';
-import moduleForAcceptance from '../helpers/module-for-acceptance';
-
-moduleForAcceptance('Acceptance | MemServer');
+// import { test } from 'qunit';
+// import moduleForAcceptance from '../helpers/module-for-acceptance';
+//
+// moduleForAcceptance('Acceptance | MemServer');
 
 // test('MemServer can serve dynamic pages', function(assert) {
 //

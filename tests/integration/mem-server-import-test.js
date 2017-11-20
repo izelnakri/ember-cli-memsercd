@@ -38,8 +38,6 @@ test('can start window.MemServer manually in integration tests', function(assert
 test('can add routes dynamically to window.MemServer after manual start', function(assert) {
   assert.expect(7);
 
-  window.MemServer.start();
-
   const { Server } = window.MemServer;
   const { Photo } = window.MemServer.Models;
 
