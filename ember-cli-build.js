@@ -15,8 +15,5 @@ module.exports = function(defaults) {
     behave. You most likely want to be modifying `./index.js` or app's build file
   */
 
-  app.import('vendor/remove-fetch.js');
-  app.import('node_modules/whatwg-fetch/fetch.js');
-
   return app.toTree();
 };

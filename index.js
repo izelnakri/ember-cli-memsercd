@@ -27,7 +27,8 @@ module.exports = {
     }
 
     if (this.addonENV.enabled) {
-      
+      app.import('vendor/remove-fetch.js');
+      app.import('node_modules/whatwg-fetch/fetch.js');
       app.import('vendor/mem-server.js');
       app.import('vendor/shims/memserver/response.js');
       app.import('vendor/shims/memserver/model.js');
