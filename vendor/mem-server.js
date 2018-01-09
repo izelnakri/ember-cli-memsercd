@@ -5407,13 +5407,12 @@ window.Pretender.prototype._handlerFor = function(verb, url, request) {
   if (match) {
     request.headers = headers;
     request.params = Object.keys(match.params).reduce((result, key) => {
-      var value = match.params[key];
+      var value = castCorrectType(match.params[key]);
 
-      return Object.assign(result, { [key]: parseInt(value, 10) || value });
+      return Object.assign(result, { [key]: value });
     }, {});
     request.queryParams = Object.keys(matches.queryParams).reduce((result, key) => {
-      var value = matches.queryParams[key];
-      var targetValue = castCorrectType(value);
+      var targetValue = castCorrectType(matches.queryParams[key]);
 
       return Object.assign(result, { [key]: targetValue });
     }, {});
@@ -5439,6 +5438,8 @@ function castCorrectType(value) {
     return false;
   } else if (value === 'true') {
     return true;
+  } else if (value === '') {
+    return null;
   }
 
   return value;
@@ -5648,7 +5649,7 @@ function resetDatabase(models, modelFixtureTree) {
       });
 
       return [primaryKey, primaryKeys.concat([model[primaryKey]])];
-    }, [null, []])[0];
+    }, [targetNamespace.MemServer.Models[modelName].primaryKey, []])[0];
 
     targetNamespace.MemServer.Models[modelName].primaryKey = modelPrimaryKey;
 
@@ -5657,19 +5658,19 @@ function resetDatabase(models, modelFixtureTree) {
 }
 
 function getModelPrimaryKey(model, existingPrimaryKeyType, modelName) {
-  if (!existingPrimaryKeyType) {
-    const primaryKey = model.id || model.uuid;
-
-    if (!primaryKey) {
-      return;
-    }
-
-    existingPrimaryKeyType = model.id ? 'id' : 'uuid';
-
-    return primaryKeyTypeSafetyCheck(existingPrimaryKeyType, primaryKey, modelName);
+  if (existingPrimaryKeyType) {
+    return primaryKeyTypeSafetyCheck(existingPrimaryKeyType, model[existingPrimaryKeyType], modelName);
   }
 
-  return primaryKeyTypeSafetyCheck(existingPrimaryKeyType, model[existingPrimaryKeyType], modelName);
+  const primaryKey = model.id || model.uuid;
+
+  if (!primaryKey) {
+    return;
+  }
+
+  existingPrimaryKeyType = model.id ? 'id' : 'uuid';
+
+  return primaryKeyTypeSafetyCheck(existingPrimaryKeyType, primaryKey, modelName);
 }
 
 return memServer;

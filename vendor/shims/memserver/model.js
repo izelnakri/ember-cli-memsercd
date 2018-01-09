@@ -5662,6 +5662,14 @@ var model = function(options) {
     },
     insert(options) {
       const models = targetNamespace.MemServer.DB[this.modelName] || [];
+
+      if (models.length === 0) {
+        const recordsPrimaryKey = this.primaryKey || (options.uuid ? 'uuid' : 'id');
+
+        this.primaryKey = recordsPrimaryKey;
+        this.attributes.push(this.primaryKey);
+      }
+
       const defaultAttributes = this.attributes.reduce((result, attribute) => {
         if (attribute === this.primaryKey) {
           result[attribute] = this.primaryKey === 'id' ? incrementId(this) : generateUUID();
