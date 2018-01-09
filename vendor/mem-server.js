@@ -5420,9 +5420,9 @@ window.Pretender.prototype._handlerFor = function(verb, url, request) {
     var contentHeader = request.headers['Content-Type'] || request.headers['content-type'];
 
     if (request.requestBody && contentHeader && contentHeader.includes('application/json')) {
-      request.params = Object.assign(request.params, JSON.parse(request.requestBody));
+      request.params = nilifyStrings(Object.assign(request.params, JSON.parse(request.requestBody)));
     } else {
-      request.params = Object.assign(request.params, lib.parse(request.requestBody ));
+      request.params = nilifyStrings(Object.assign(request.params, lib.parse(request.requestBody)));
     }
   }
 
@@ -5438,12 +5438,18 @@ function castCorrectType(value) {
     return false;
   } else if (value === 'true') {
     return true;
+  }
+
+  return nilifyStrings(value);
+}
+
+function nilifyStrings(value) {
+  if (typeof value === 'object') {
+    return Object.keys(value).reduce((object, key) => {
+      return Object.assign(object, { [key]: nilifyStrings(value[key]) });
+    }, {});
   } else if (value === '') {
     return null;
-  } else if (typeof value === 'object') {
-    return Object.keys(value).reduce((object, key) => {
-      return Object.assign(object, { [key]: value[key] === '' ? null : value[key] });
-    }, {});
   }
 
   return value;
