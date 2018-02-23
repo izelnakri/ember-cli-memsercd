@@ -10,7 +10,9 @@ export default function() {
   const modelFixtureTree = APP_MODULES.reduce((result, moduleReference) => {
     if (/\/memserver\/fixtures/g.test(moduleReference)) {
       const modelName = classify(singularize(moduleReference.split('/').slice(-1)[0]));
-      const fixtures = require(moduleReference, null, null, true).default
+      const fixtures = Array.from(require(moduleReference, null, null, true).default, (fixture) => {
+        return Object.assign({}, fixture);
+      });
 
       if (!fixtures) {
         throw new Error(`[MemServer] ${moduleReference} cannot be loaded, please check if you are exporting an array!`)
