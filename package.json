@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-memserver",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Mock HTTP Server + In-memory ORM/DB for Ember.js. Fastboot compliant MemServer bindings for Ember-cli. Built for large frontend teams, fast tests and rapid prototyping",
   "keywords": [
     "ember-addon",

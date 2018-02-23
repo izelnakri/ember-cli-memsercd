@@ -4325,27 +4325,41 @@ var os$1 = Object.freeze({
 	default: os
 });
 
+var hasFlag = createCommonjsModule(function (module) {
 'use strict';
-var hasFlag = function (flag, argv$$1) {
+module.exports = (flag, argv$$1) => {
 	argv$$1 = argv$$1 || process.argv;
-
-	var terminatorPos = argv$$1.indexOf('--');
-	var prefix = /^-{1,2}/.test(flag) ? '' : '--';
-	var pos = argv$$1.indexOf(prefix + flag);
-
+	const prefix = flag.startsWith('-') ? '' : (flag.length === 1 ? '-' : '--');
+	const pos = argv$$1.indexOf(prefix + flag);
+	const terminatorPos = argv$$1.indexOf('--');
 	return pos !== -1 && (terminatorPos === -1 ? true : pos < terminatorPos);
 };
+});
 
 var os$2 = ( os$1 && os ) || os$1;
 
-var supportsColor = createCommonjsModule(function (module) {
 'use strict';
 
 
 
-const env$$1 = process.env;
+const env$1 = process.env;
 
-const support = level => {
+let forceColor;
+if (hasFlag('no-color') ||
+	hasFlag('no-colors') ||
+	hasFlag('color=false')) {
+	forceColor = false;
+} else if (hasFlag('color') ||
+	hasFlag('colors') ||
+	hasFlag('color=true') ||
+	hasFlag('color=always')) {
+	forceColor = true;
+}
+if ('FORCE_COLOR' in env$1) {
+	forceColor = env$1.FORCE_COLOR.length === 0 || parseInt(env$1.FORCE_COLOR, 10) !== 0;
+}
+
+function translateLevel(level) {
 	if (level === 0) {
 		return false;
 	}
@@ -4356,12 +4370,10 @@ const support = level => {
 		has256: level >= 2,
 		has16m: level >= 3
 	};
-};
+}
 
-let supportLevel = (() => {
-	if (hasFlag('no-color') ||
-		hasFlag('no-colors') ||
-		hasFlag('color=false')) {
+function supportsColor(stream) {
+	if (forceColor === false) {
 		return 0;
 	}
 
@@ -4375,51 +4387,47 @@ let supportLevel = (() => {
 		return 2;
 	}
 
-	if (hasFlag('color') ||
-		hasFlag('colors') ||
-		hasFlag('color=true') ||
-		hasFlag('color=always')) {
-		return 1;
-	}
-
-	if (process.stdout && !process.stdout.isTTY) {
+	if (stream && !stream.isTTY && forceColor !== true) {
 		return 0;
 	}
+
+	const min = forceColor ? 1 : 0;
 
 	if (process.platform === 'win32') {
 		// Node.js 7.5.0 is the first version of Node.js to include a patch to
 		// libuv that enables 256 color output on Windows. Anything earlier and it
 		// won't work. However, here we target Node.js 8 at minimum as it is an LTS
 		// release, and Node.js 7 is not. Windows 10 build 10586 is the first Windows
-		// release that supports 256 colors.
+		// release that supports 256 colors. Windows 10 build 14931 is the first release
+		// that supports 16m/TrueColor.
 		const osRelease = os$2.release().split('.');
 		if (
 			Number(process.versions.node.split('.')[0]) >= 8 &&
 			Number(osRelease[0]) >= 10 &&
 			Number(osRelease[2]) >= 10586
 		) {
-			return 2;
+			return Number(osRelease[2]) >= 14931 ? 3 : 2;
 		}
 
 		return 1;
 	}
 
-	if ('CI' in env$$1) {
-		if (['TRAVIS', 'CIRCLECI', 'APPVEYOR', 'GITLAB_CI'].some(sign => sign in env$$1) || env$$1.CI_NAME === 'codeship') {
+	if ('CI' in env$1) {
+		if (['TRAVIS', 'CIRCLECI', 'APPVEYOR', 'GITLAB_CI'].some(sign => sign in env$1) || env$1.CI_NAME === 'codeship') {
 			return 1;
 		}
 
-		return 0;
+		return min;
 	}
 
-	if ('TEAMCITY_VERSION' in env$$1) {
-		return /^(9\.(0*[1-9]\d*)\.|\d{2,}\.)/.test(env$$1.TEAMCITY_VERSION) ? 1 : 0;
+	if ('TEAMCITY_VERSION' in env$1) {
+		return /^(9\.(0*[1-9]\d*)\.|\d{2,}\.)/.test(env$1.TEAMCITY_VERSION) ? 1 : 0;
 	}
 
-	if ('TERM_PROGRAM' in env$$1) {
-		const version$$1 = parseInt((env$$1.TERM_PROGRAM_VERSION || '').split('.')[0], 10);
+	if ('TERM_PROGRAM' in env$1) {
+		const version$$1 = parseInt((env$1.TERM_PROGRAM_VERSION || '').split('.')[0], 10);
 
-		switch (env$$1.TERM_PROGRAM) {
+		switch (env$1.TERM_PROGRAM) {
 			case 'iTerm.app':
 				return version$$1 >= 3 ? 3 : 2;
 			case 'Hyper':
@@ -4430,31 +4438,35 @@ let supportLevel = (() => {
 		}
 	}
 
-	if (/-256(color)?$/i.test(env$$1.TERM)) {
+	if (/-256(color)?$/i.test(env$1.TERM)) {
 		return 2;
 	}
 
-	if (/^screen|^xterm|^vt100|^rxvt|color|ansi|cygwin|linux/i.test(env$$1.TERM)) {
+	if (/^screen|^xterm|^vt100|^rxvt|color|ansi|cygwin|linux/i.test(env$1.TERM)) {
 		return 1;
 	}
 
-	if ('COLORTERM' in env$$1) {
+	if ('COLORTERM' in env$1) {
 		return 1;
 	}
 
-	if (env$$1.TERM === 'dumb') {
-		return 0;
+	if (env$1.TERM === 'dumb') {
+		return min;
 	}
 
-	return 0;
-})();
-
-if ('FORCE_COLOR' in env$$1) {
-	supportLevel = parseInt(env$$1.FORCE_COLOR, 10) === 0 ? 0 : (supportLevel || 1);
+	return min;
 }
 
-module.exports = process && support(supportLevel);
-});
+function getSupportLevel(stream) {
+	const level = supportsColor(stream);
+	return translateLevel(level);
+}
+
+var supportsColor_1 = {
+	supportsColor: getSupportLevel,
+	stdout: getSupportLevel(process.stdout),
+	stderr: getSupportLevel(process.stderr)
+};
 
 var templates = createCommonjsModule(function (module) {
 'use strict';
@@ -4591,7 +4603,7 @@ var chalk = createCommonjsModule(function (module) {
 'use strict';
 
 
-
+const stdoutColor = supportsColor_1.stdout;
 
 
 
@@ -4609,7 +4621,7 @@ function applyOptions(obj, options) {
 	options = options || {};
 
 	// Detect level if not set manually
-	const scLevel = supportsColor ? supportsColor.level : 0;
+	const scLevel = stdoutColor ? stdoutColor.level : 0;
 	obj.level = options.level === undefined ? scLevel : options.level;
 	obj.enabled = 'enabled' in options ? options.enabled : obj.level > 0;
 }
@@ -4814,7 +4826,7 @@ function chalkTag(chalk, strings) {
 Object.defineProperties(Chalk.prototype, styles);
 
 module.exports = Chalk(); // eslint-disable-line new-cap
-module.exports.supportsColor = supportsColor;
+module.exports.supportsColor = stdoutColor;
 module.exports.default = module.exports; // For TypeScript
 });
 
@@ -5584,8 +5596,8 @@ var emberCliStringUtils = {
   capitalize: capitalize
 };
 
-var emberCliStringUtils_1 = emberCliStringUtils.classify;
-var emberCliStringUtils_2 = emberCliStringUtils.underscore;
+var emberCliStringUtils_4 = emberCliStringUtils.classify;
+var emberCliStringUtils_5 = emberCliStringUtils.underscore;
 
 function generateUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -5776,13 +5788,13 @@ var model = function(options) {
         }
 
         return result;
-      }, object);
+      }, Object.assign({}, object));
 
       return Object.keys(this.embedReferences).reduce((result, embedKey) => {
         const embedModel = this.embedReferences[embedKey];
         const embeddedRecords = this.getRelationship(object, embedKey, embedModel);
 
-        return Object.assign(result, { [embedKey]: embedModel.serializer(embeddedRecords) });
+        return Object.assign({}, result, { [embedKey]: embedModel.serializer(embeddedRecords) });
       }, objectWithAllAttributes);
     },
     getRelationship(parentObject, relationshipName, relationshipModel) {
@@ -5791,28 +5803,45 @@ var model = function(options) {
       }
 
       const targetRelationshipModel = relationshipModel ||
-        targetNamespace.MemServer.Models[emberCliStringUtils_1(singularize(relationshipName))];
+        targetNamespace.MemServer.Models[emberCliStringUtils_4(singularize(relationshipName))];
       const hasManyRelationship = pluralize(relationshipName) === relationshipName;
 
-      if (!targetRelationshipModel) { // NOTE: test this
+      if (!targetRelationshipModel) {
         throw new Error(chalk.red(`[MemServer] ${relationshipName} relationship could not be found on ${this.modelName} model. Please put the ${relationshipName} Model object as the third parameter to ${this.modelName}.getRelationship function`));
       } else if (hasManyRelationship) {
-        const hasManyRecords = targetRelationshipModel.findAll({
-          [`${emberCliStringUtils_2(this.modelName)}_id`]: parentObject.id
+        if (parentObject.id) {
+          const hasManyIDRecords = targetRelationshipModel.findAll({
+            [`${emberCliStringUtils_5(this.modelName)}_id`]: parentObject.id
+          });
+
+          return hasManyIDRecords.length > 0 ? hasManyIDRecords : [];
+        } else if (parentObject.uuid) {
+          const hasManyUUIDRecords = targetRelationshipModel.findAll({
+            [`${emberCliStringUtils_5(this.modelName)}_uuid`]: parentObject.uuid
+          });
+
+          return hasManyUUIDRecords.length > 0 ? hasManyUUIDRecords : [];
+        }
+      }
+
+      const objectRef = parentObject[`${emberCliStringUtils_5(targetRelationshipModel.modelName)}_id`] ||
+        parentObject[`${emberCliStringUtils_5(targetRelationshipModel.modelName)}_uuid`];
+
+      if (objectRef && (typeof objectRef === 'number')) {
+        return targetRelationshipModel.find(objectRef) ;
+      } else if (objectRef) {
+        return targetRelationshipModel.findBy({ uuid: objectRef });
+      }
+
+      if (parentObject.id) {
+        return targetRelationshipModel.findBy({
+          [`${emberCliStringUtils_5(this.modelName)}_id`]: parentObject.id
         });
-
-        return hasManyRecords.length > 0 ? hasManyRecords : [];
+      } else if (parentObject.uuid) {
+        return targetRelationshipModel.findBy({
+          [`${emberCliStringUtils_5(this.modelName)}_uuid`]: parentObject.uuid
+        });
       }
-
-      const objectsReference = parentObject[`${emberCliStringUtils_2(targetRelationshipModel.modelName)}_id`];
-
-      if (objectsReference) {
-        return targetRelationshipModel.find(objectsReference);
-      }
-
-      return targetRelationshipModel.findBy({ // NOTE: id or uuid lookup?
-        [`${emberCliStringUtils_2(this.modelName)}_id`]: parentObject.id
-      });
     }
   }, options);
 };

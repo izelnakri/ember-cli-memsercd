@@ -42,7 +42,6 @@ const buildConfig = function() {
         commonjs({
           include: 'node_modules/**',
           namedExports: {
-            'node_modules/ember-cli-string-utils/index.js': ['classify', 'underscore', 'dasherize'],
             'node_modules/ember-inflector/index.js': ['singularize', 'pluralize']
           }
         }),
@@ -64,7 +63,6 @@ const buildConfig = function() {
         commonjs({
           include: [`${require.resolve('memserver')}/../../node_modules/**`, 'node_modules/**'],
           namedExports: {
-            'node_modules/ember-cli-string-utils/index.js': ['classify', 'underscore', 'dasherize'],
             'node_modules/ember-inflector/index.js': ['singularize', 'pluralize']
           }
         }),
@@ -86,7 +84,6 @@ const buildConfig = function() {
       commonjs({
         include: 'node_modules/**',
         namedExports: {
-          'node_modules/ember-cli-string-utils/index.js': ['classify', 'underscore', 'dasherize'],
           'node_modules/ember-inflector/index.js': ['singularize', 'pluralize']
         }
       }),
