@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-memserver",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Mock HTTP Server + In-memory ORM/DB for Ember.js. Fastboot compliant MemServer bindings for Ember-cli. Built for large frontend teams, fast tests and rapid prototyping",
   "keywords": [
     "ember-addon",
@@ -32,10 +32,10 @@
   },
   "dependencies": {
     "ember-cli-babel": "^6.6.0",
-    "ember-inflector": "^2.0.1",
+    "ember-inflector": "^2.1.0",
     "fake-xml-http-request": "^1.6.0",
-    "jquery": "^3.2.1",
-    "memserver": "^1.0.4",
+    "jquery": "^3.3.1",
+    "memserver": "^1.1.0",
     "pretender": "1.6.1",
     "route-recognizer": "^0.3.3",
     "whatwg-fetch": "^2.0.3"
@@ -43,15 +43,15 @@
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
     "ember-ajax": "^3.0.0",
-    "ember-cli": "~2.16.1",
+    "ember-cli": "~3.0.0",
     "ember-cli-addon-docs": "ember-learn/ember-cli-addon-docs",
     "ember-cli-dependency-checker": "^2.0.0",
-    "ember-cli-eslint": "^4.0.0",
+    "ember-cli-eslint": "^4.2.1",
     "ember-cli-htmlbars": "^2.0.1",
     "ember-cli-htmlbars-inline-precompile": "^1.0.0",
     "ember-cli-inject-live-reload": "^1.4.1",
-    "ember-cli-qunit": "^4.0.0",
-    "ember-cli-shims": "^1.1.0",
+    "ember-cli-qunit": "^4.1.1",
+    "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^2.0.0",
     "ember-disable-prototype-extensions": "^1.1.2",
@@ -59,9 +59,9 @@
     "ember-fastboot-addon-tests": "^0.4.0",
     "ember-load-initializers": "^1.0.0",
     "ember-resolver": "^4.0.0",
-    "ember-source": "~2.16.0",
+    "ember-source": "~3.0.0",
     "loader.js": "^4.2.3",
-    "moment": "^2.19.1"
+    "moment": "^2.20.1"
   },
   "engines": {
     "node": "^4.5 || 6.* || >= 7.*"
