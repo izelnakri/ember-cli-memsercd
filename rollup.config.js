@@ -6,10 +6,9 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import globals from 'rollup-plugin-node-globals';
 import builtins from 'rollup-plugin-node-builtins';
-import Inflector from 'i';
 
-const { pluralize } = Inflector();
 const NPM_PATH = './node_modules';
+
 const IS_MEMSERVER_MODEL_BUILD = process.env.BUILD === 'model';
 const IS_MEMSERVER_FASTBOOT_BUILD = process.env.BUILD === 'model';
 
