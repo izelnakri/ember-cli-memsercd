@@ -6121,9 +6121,9 @@ memory-streams@^0.1.0:
   dependencies:
     readable-stream "~1.0.2"
 
-memserver@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/memserver/-/memserver-1.1.4.tgz#a40b68ad95bc095f7ce50909947a2a55d2ee34c1"
+memserver@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/memserver/-/memserver-1.1.5.tgz#679475e7b3fa0b067d8c17d6050a234144374457"
   dependencies:
     "@std/esm" "^0.12.5"
     babel-preset-env "^1.6.1"
