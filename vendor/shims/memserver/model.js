@@ -5824,8 +5824,8 @@ var model = function(options) {
         }
       }
 
-      const objectRef = parentObject[`${emberCliStringUtils_5(targetRelationshipModel.modelName)}_id`] ||
-        parentObject[`${emberCliStringUtils_5(targetRelationshipModel.modelName)}_uuid`];
+      const objectRef = parentObject[`${emberCliStringUtils_5(relationshipName)}_id`] ||
+        parentObject[`${emberCliStringUtils_5(relationshipName)}_uuid`];
 
       if (objectRef && (typeof objectRef === 'number')) {
         return targetRelationshipModel.find(objectRef) ;
