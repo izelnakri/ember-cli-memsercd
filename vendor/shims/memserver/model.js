@@ -7,9 +7,9 @@
 var _MEMSERVER_MODEL = (function () {
 'use strict';
 
-var global$1 = typeof global !== "undefined" ? global :
+var global$1 = (typeof global !== "undefined" ? global :
             typeof self !== "undefined" ? self :
-            typeof window !== "undefined" ? window : {};
+            typeof window !== "undefined" ? window : {});
 
 var lookup = [];
 var revLookup = [];
@@ -4140,29 +4140,42 @@ function assembleStyles() {
 		});
 	}
 
+	const ansi2ansi = n => n;
 	const rgb2rgb = (r, g, b) => [r, g, b];
 
 	styles.color.close = '\u001B[39m';
 	styles.bgColor.close = '\u001B[49m';
 
-	styles.color.ansi = {};
-	styles.color.ansi256 = {};
+	styles.color.ansi = {
+		ansi: wrapAnsi16(ansi2ansi, 0)
+	};
+	styles.color.ansi256 = {
+		ansi256: wrapAnsi256(ansi2ansi, 0)
+	};
 	styles.color.ansi16m = {
 		rgb: wrapAnsi16m(rgb2rgb, 0)
 	};
 
-	styles.bgColor.ansi = {};
-	styles.bgColor.ansi256 = {};
+	styles.bgColor.ansi = {
+		ansi: wrapAnsi16(ansi2ansi, 10)
+	};
+	styles.bgColor.ansi256 = {
+		ansi256: wrapAnsi256(ansi2ansi, 10)
+	};
 	styles.bgColor.ansi16m = {
 		rgb: wrapAnsi16m(rgb2rgb, 10)
 	};
 
-	for (const key of Object.keys(colorConvert)) {
+	for (let key of Object.keys(colorConvert)) {
 		if (typeof colorConvert[key] !== 'object') {
 			continue;
 		}
 
 		const suite = colorConvert[key];
+
+		if (key === 'ansi16') {
+			key = 'ansi';
+		}
 
 		if ('ansi16' in suite) {
 			styles.color.ansi[key] = wrapAnsi16(suite.ansi16, 0);
@@ -4424,14 +4437,16 @@ function supportsColor(stream) {
 		return /^(9\.(0*[1-9]\d*)\.|\d{2,}\.)/.test(env$1.TEAMCITY_VERSION) ? 1 : 0;
 	}
 
+	if (env$1.COLORTERM === 'truecolor') {
+		return 3;
+	}
+
 	if ('TERM_PROGRAM' in env$1) {
 		const version$$1 = parseInt((env$1.TERM_PROGRAM_VERSION || '').split('.')[0], 10);
 
 		switch (env$1.TERM_PROGRAM) {
 			case 'iTerm.app':
 				return version$$1 >= 3 ? 3 : 2;
-			case 'Hyper':
-				return 3;
 			case 'Apple_Terminal':
 				return 2;
 			// No default
